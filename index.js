@@ -67,5 +67,8 @@ httpServer.listen(port, function() {
     console.log('Corpsboard-Server running on port ' + port + '.');
 });
 
+//To enable logs on the dashboard
+process.env.VERBOSE=true;
+
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
