@@ -129,6 +129,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                                success: function(object) {
                                object.increment("profileViews", 1);
                                object.save();
+                               console.log("Incremented profile count")
                                response.success();
                                },
                                error: function(error) {
