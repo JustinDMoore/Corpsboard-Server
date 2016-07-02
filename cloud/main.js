@@ -1,29 +1,29 @@
-Parse.Cloud.afterSave(Parse.User, function(request) {
-Parse.Cloud.useMasterKey();  
+// Parse.Cloud.afterSave(Parse.User, function(request) {
+// Parse.Cloud.useMasterKey();  
 
-if (request.object.existed()) { // it existed before
-   } else { // it is new
-     var picture = request.get('picture')
-     request.
-}
-
-
-  query = new Parse.Query(Parse.Role);
-  query.equalTo("name", "normalUser");
-  query.first ( {
-    success: function(object) {
-
-      object.relation("users").add(request.user);
-
-      object.save();
+// if (request.object.existed()) { // it existed before
+//    } else { // it is new
+//      var picture = request.get('picture')
+//      request.
+// }
 
 
-    },
-    error: function(error) {
-      throw "Got an error " + error.code + " : " + error.message;
-    }
-  });
-});
+//   query = new Parse.Query(Parse.Role);
+//   query.equalTo("name", "normalUser");
+//   query.first ( {
+//     success: function(object) {
+
+//       object.relation("users").add(request.user);
+
+//       object.save();
+
+
+//     },
+//     error: function(error) {
+//       throw "Got an error " + error.code + " : " + error.message;
+//     }
+//   });
+// });
 
 Parse.Cloud.define("pushScores", function(request, response) {
                    
