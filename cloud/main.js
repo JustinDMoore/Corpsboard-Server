@@ -27,7 +27,7 @@
 Parse.Cloud.define('hello',
     function(request, response) {
       Parse.Cloud.useMasterKey();
-      console.log('Incrementing profile views... for: ' + request.params.userObjectId);
+      console.log('Incrementing profile views... for: ' + request.params);
       var user = new Parse.User();
       var query = new Parse.Query(Parse.User);
       query.equalTo("objectId", request.params.userObjectId);
