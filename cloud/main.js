@@ -47,6 +47,28 @@ Parse.Cloud.define('incrementProfileViews',
                   });
 });
 
+// Increment user show reviews count
+Parse.Cloud.define('incrementShowReviews',
+    function(request, response) {
+      Parse.Cloud.useMasterKey();
+      var user = new Parse.User();
+      var query = new Parse.Query(Parse.User);
+      query.equalTo("objectId", request.params.userObjectId);
+      query.first({
+                  useMasterKey: true,
+                  success: function(object) {
+                  object.increment("showReviews", 1);
+                  object.save();
+                  console.log('Show reviews incremented for: ' + object.get('nickname') + ' : ' + request.params.userObjectId);
+                  response.success();
+                  },
+                  error: function(error) {
+                  console.error('Show reviews NOT incremented: ' + error.code + ' :'  + error.message);
+                  response.error();
+                  }
+                  });
+});
+
 // Parse.Cloud.define('hello', function(req, res) {
 //   res.success('Hi');
 //   var fileLogger = new FileLoggerAdapter();
@@ -152,26 +174,6 @@ Parse.Push.send({
 //                                 }
 //                                 });
 //                       });
-
-
-// // Increment number of reviews given by user
-// Parse.Cloud.define("incrementReviewsByUser", function(request, response) {
-//                    Parse.Cloud.useMasterKey();
-//                    var user = new Parse.User();
-//                    var query = new Parse.Query(Parse.User);
-//                    query.equalTo("objectId", request.params.userObjectId);
-//                    query.first({
-//                                success: function(object) {
-//                                object.increment("showReviews", 1);
-//                                object.save();
-//                                response.success();
-//                                },
-//                                error: function(error) {
-//                                console.error("Got an error " + error.code + " : " + error.message);
-//                                response.error();
-//                                }
-//                                });
-//                    });
 
 // // Delete all private chat messages -- called by deleteChat
 // Parse.Cloud.define("deleteChatMessages", function(request, response) {
