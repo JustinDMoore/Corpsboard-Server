@@ -26,8 +26,24 @@
 // });
 Parse.Cloud.define('hello',
     function(request, response) {
-        console.log('Hello, Justin');
-        request.log.info("Hello Justin: ", {user:request.user, params:request.params});
+      Parse.Cloud.useMasterKey();
+      console.log('Incrementing profile views...');
+      var user = new Parse.User();
+      var query = new Parse.Query(Parse.User);
+      query.equalTo("objectId", request.params.userObjectId);
+      query.first({
+                  useMasterKey: true,
+                  success: function(object) {
+                  object.increment("profileViews", 1);
+                  object.save();
+                  console.log('Successful increment.');
+                  response.success();
+                  },
+                  error: function(error) {
+                  console.error('Got an error ' + error.code + ' :'  + error.message);
+                  response.error();
+                  }
+                  });
 });
 
 // Parse.Cloud.define('hello', function(req, res) {
