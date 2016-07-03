@@ -1,5 +1,5 @@
 // Parse.Cloud.afterSave(Parse.User, function(request) {
-// Parse.Cloud.useMasterKey();  
+// Parse.Cloud.useMasterKey();
 
 // if (request.object.existed()) { // it existed before
 //    } else { // it is new
@@ -26,17 +26,17 @@
 // });
 
 Parse.Cloud.define("pushScores", function(request, response) {
-                   
+
 Parse.Push.send({
   channels: [ "global" ],
   data: {
      alert: request.params.message
   }
-}, { 
+}, {
   useMasterKey: true,
-  success: function() { 
+  success: function() {
   	console.log("Push successful.")
-  }, error: function(err) { 
+  }, error: function(err) {
     console.log(err);
   }
 });
@@ -126,6 +126,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                    var query = new Parse.Query(Parse.User);
                    query.equalTo("objectId", request.params.userObjectId);
                    query.first({
+                               useMasterKey: true,
                                success: function(object) {
                                object.increment("profileViews", 1);
                                object.save();
@@ -160,20 +161,20 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 
 // // Delete all private chat messages -- called by deleteChat
 // Parse.Cloud.define("deleteChatMessages", function(request, response) {
-                   
+
 //                    var queryChat = new Parse.Query("Chat");
 //                    queryChat.equalTo("roomId", request.params.roomId);
 //                    queryChat.equalTo("belongsToUser", request.user);
 //                    queryChat.find().then(function (users) {
-                                         
+
 //                                          //What do I do HERE to delete the posts?
 //                                          users.forEach(function(user) {
-                                                       
+
 //                                                        user.destroy({
 //                                                                     success: function() {
 //                                                                     // SUCCESS CODE HERE, IF YOU WANT
-                                                                    
-                                                                    
+
+
 //                                                                     },
 //                                                                     error: function(error) {
 //                                                                     // ERROR CODE HERE, IF YOU WANT
@@ -188,15 +189,15 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 
 // // Delete a private chat room - then calls deleteChatMessages
 // Parse.Cloud.define("deleteChat", function(request, response) {
-                   
+
 //                    var queryChatMaster = new Parse.Query("Messages");
 //                    queryChatMaster.equalTo("roomId", request.params.roomId);
 //                    queryChatMaster.equalTo("belongsToUser", request.user);
 //                    queryChatMaster.find().then(function (users) {
-                                               
+
 //                                                //What do I do HERE to delete the posts?
 //                                                users.forEach(function(user) {
-                                                             
+
 //                                                              user.destroy({
 //                                                                           success: function() {
 //                                                                           // SUCCESS CODE HERE, IF YOU WANT
@@ -207,7 +208,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                                                                           error: function(error) {
 //                                                                                           }
 //                                                                                           });
-                                                                          
+
 //                                                                           },
 //                                                                           error: function(error) {
 //                                                                           // ERROR CODE HERE, IF YOU WANT
@@ -223,11 +224,11 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 // // Admin functions
 // Parse.Cloud.afterSave("feedback", function(request, response) {
 //                       Parse.Cloud.useMasterKey();
-                      
+
 //                       if (request.object.existed()) { // it existed before
-                      
+
 //                       } else { // it is new
-                      
+
 //                       var query = new Parse.Query("AppSettings");
 //                       query.equalTo("objectId", "IjplBNRNjj");
 //                       query.first({
@@ -245,7 +246,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                                   console.log(err);
 //                                                   }
 //                                                   });
-                                  
+
 //                                   response.success();
 //                                   },
 //                                   error: function(error) {
@@ -253,18 +254,18 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                   response.error();
 //                                   }
 //                                   });
-                      
+
 //                       }
-                      
+
 //                       });
 
 // Parse.Cloud.afterSave("photos", function(request, response) {
 //                       Parse.Cloud.useMasterKey();
-                      
+
 //                       if (request.object.existed()) { // it existed before
-                      
+
 //                       } else { // it is new
-                      
+
 //                       var userSubmitted = request.object.get("isUserSubmitted");
 //                       if (userSubmitted) {
 //                       var query = new Parse.Query("AppSettings");
@@ -284,7 +285,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                                   console.log(err);
 //                                                   }
 //                                                   });
-                                  
+
 //                                   response.success();
 //                                   },
 //                                   error: function(error) {
@@ -295,15 +296,15 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                       }
 //                       }
 
-                      
+
 //                       });
 
 // Parse.Cloud.afterSave("reportUsers", function(request, response) {
 //                       Parse.Cloud.useMasterKey();
-                      
+
 //                       if (request.object.existed()) { // it existed before
 //                       } else { // it is new
-                      
+
 //                       var query = new Parse.Query("AppSettings");
 //                       query.equalTo("objectId", "IjplBNRNjj");
 //                       query.first({
@@ -321,7 +322,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                                   console.log(err);
 //                                                   }
 //                                                   });
-                                  
+
 //                                   response.success();
 //                                   },
 //                                   error: function(error) {
@@ -329,18 +330,18 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                   response.error();
 //                                   }
 //                                   });
-                      
-                      
+
+
 //                       }
-                      
+
 //                       });
 
 // Parse.Cloud.afterSave("problems", function(request, response) {
 //                       Parse.Cloud.useMasterKey();
-                      
+
 //                       if (request.object.existed()) { // it existed before
 //                       } else { // it is new
-                      
+
 //                       var type = request.object.get("type");
 //                       var query = new Parse.Query("AppSettings");
 //                       query.equalTo("objectId", "IjplBNRNjj");
@@ -359,7 +360,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                                   console.log(err);
 //                                                   }
 //                                                   });
-                                  
+
 //                                   response.success();
 //                                   },
 //                                   error: function(error) {
@@ -367,15 +368,15 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                   response.error();
 //                                   }
 //                                   });
-                      
+
 //                       }
-                      
+
 //                       });
 
 
 // Parse.Cloud.afterSave(Parse.User, function(request, response) {
 //                       Parse.Cloud.useMasterKey();
-                      
+
 //                       if (request.object.existed()) { // it existed before
 //                       } else { // it is newaf
 //                       Parse.Push.send({
@@ -389,9 +390,9 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                                       console.log(err);
 //                                       }
 //                                       });
-                      
+
 //                       }
-                      
+
 //                       });
 
 
@@ -423,9 +424,9 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 // // STORE
 // // Returns all store objects to the client
 // Parse.Cloud.define("getStoreObjects", function(request, response) {
-                   
+
 //                    Parse.Cloud.useMasterKey();
-// //                   
+// //
 // //                   //First, check to see if the store is open
 // //                   var queryOpen = new Parse.Query("admin");
 // //                   queryOpen.first({
@@ -437,30 +438,30 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 // //                               console.log("There was an error");
 // //                               }
 // //                               });
-// //                   
-// //                   
-// //                   
-                   
+// //
+// //
+// //
+
 //                    var query = new Parse.Query("Store");
 //                    query.limit(1000)
 //                    query.find({
 //                               success: function(results) {
-                              
+
 //                               var status = "Found " + results.length + " items in the store";
 //                               response.success(results);
-                              
+
 //                               },
-                              
+
 //                               error: function() {
-                              
-//                               status = "No items exist in the store "; 
+
+//                               status = "No items exist in the store ";
 //                               response.error(status);
 //                               }
 //                               });
 //                    });
 
 // Parse.Cloud.define("getItemsInCart", function(request, response) {
-                   
+
 //                    Parse.Cloud.useMasterKey();
 //                    var query = new Parse.Query("Orders");
 //                    query.equalTo("status", "CART");
@@ -469,14 +470,14 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 
 //                    query.find({
 //                               success: function(results) {
-                              
+
 //                               var status = "Found " + results.length + " items in the users cart";
 //                               response.success(results);
-                              
+
 //                               },
-                              
+
 //                               error: function() {
-                              
+
 //                               status = "No items exist in the users cart ";
 //                               response.error(status);
 //                               }
@@ -485,7 +486,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 
 // // Returns all category objects to the client (Apparel, Instruments, Gifts, etc)
 // Parse.Cloud.define("getStoreCategories", function(request, response) {
-                   
+
 //                    Parse.Cloud.useMasterKey();
 //                    var query = new Parse.Query("Banners");
 //                    query.equalTo("type", "STORECATEGORY");
@@ -493,14 +494,14 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                    query.ascending("order");
 //                    query.find({
 //                               success: function(results) {
-                              
+
 //                               var status = "Found " + results.length + " categories in the store";
 //                               response.success(results);
-                              
+
 //                               },
-                              
+
 //                               error: function() {
-                              
+
 //                               status = "No categories exist in the store ";
 //                               response.error(status);
 //                               }
@@ -509,7 +510,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 
 // // Returns all store banner objects to the client
 // Parse.Cloud.define("getStoreBanners", function(request, response) {
-                   
+
 //                    Parse.Cloud.useMasterKey();
 //                    var query = new Parse.Query("Banners");
 //                    query.equalTo("type", "STORE");
@@ -517,14 +518,14 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //                    query.ascending("order");
 //                    query.find({
 //                               success: function(results) {
-                              
+
 //                               var status = "Found " + results.length + " banners for the store";
 //                               response.success(results);
-                              
+
 //                               },
-                              
+
 //                               error: function() {
-                              
+
 //                               status = "No banners exist for the store ";
 //                               response.error(status);
 //                               }
@@ -560,5 +561,3 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
 //               }
 //               });
 //};
-
-
