@@ -5,6 +5,8 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
+//For logging
+var logger = require('parse-server/lib/Adapters/Logger/FileLoggerAdapter').FileLoggerAdapter;
 var databaseUri = 'mongodb://JustinDMoore:Ju$tin!1@ds011345-a0.mlab.com:11345,ds011345-a1.mlab.com:11345/corpsboard?replicaSet=rs-ds011345';
 
 if (!databaseUri) {
