@@ -24,10 +24,11 @@
 //     }
 //   });
 // });
-Parse.Cloud.define('hello',
+
+// Increment user profile view count
+Parse.Cloud.define('incrementProfileViews',
     function(request, response) {
       Parse.Cloud.useMasterKey();
-      console.log('Incrementing profile views... for: ' + request.params.userObjectId);
       var user = new Parse.User();
       var query = new Parse.Query(Parse.User);
       query.equalTo("objectId", request.params.userObjectId);
@@ -36,11 +37,11 @@ Parse.Cloud.define('hello',
                   success: function(object) {
                   object.increment("profileViews", 1);
                   object.save();
-                  console.log('Successful increment.');
+                  console.log('Profile views incremented.');
                   response.success();
                   },
                   error: function(error) {
-                  console.error('Got an error ' + error.code + ' :'  + error.message);
+                  console.error('Profile views NOT incremented: ' + error.code + ' :'  + error.message);
                   response.error();
                   }
                   });
@@ -103,8 +104,6 @@ query.equalTo('user', targetUser);
         console.log("error: Message Push: " + e.code + " msg: " + e.message);
     }
     });
-
-
 });
 
 Parse.Cloud.define("pushUserAtShow", function(request, response) {
@@ -154,29 +153,6 @@ Parse.Push.send({
 //                                 });
 //                       });
 
-
-
-// Increment user profile view count
-Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
-                   Parse.Cloud.useMasterKey();
-                   console.log('Incrementing profile views...');
-                   var user = new Parse.User();
-                   var query = new Parse.Query(Parse.User);
-                   query.equalTo("objectId", request.params.userObjectId);
-                   query.first({
-                               useMasterKey: true,
-                               success: function(object) {
-                               object.increment("profileViews", 1);
-                               object.save();
-                               console.log('Successful increment.');
-                               response.success();
-                               },
-                               error: function(error) {
-                               console.error('Got an error ' + error.code + ' :'  + error.message);
-                               response.error();
-                               }
-                               });
-                   });
 
 // // Increment number of reviews given by user
 // Parse.Cloud.define("incrementReviewsByUser", function(request, response) {
