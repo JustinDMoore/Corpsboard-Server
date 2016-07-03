@@ -37,7 +37,7 @@ Parse.Cloud.define('incrementProfileViews',
                   success: function(object) {
                   object.increment("profileViews", 1);
                   object.save();
-                  console.log('Profile views incremented for: ' + object.get('nickname') + ' : ' + object.get('objectId'));
+                  console.log('Profile views incremented for: ' + object.get('nickname') + ' : ' + request.params.userObjectId);
                   response.success();
                   },
                   error: function(error) {
