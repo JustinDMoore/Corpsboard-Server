@@ -25,12 +25,21 @@
 //   });
 // });
 
+
 Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
   var fileLogger = new FileLoggerAdapter();
-for (var i = 0; i < 10; i ++) {
-    fileLogger.info(i);
-}
+  for (var i = 0; i < 10; i ++) {
+      fileLogger.info(i);
+  }
+
+  // Wait for the logs to flush before querying
+  setTimeout(function() {
+      fileLogger.query({size:2, order: 'desc'})
+          .then((res)=> {
+              console.log(res)
+          });
+  }, 100);
 });
 
 Parse.Cloud.define("pushScores", function(request, response) {
