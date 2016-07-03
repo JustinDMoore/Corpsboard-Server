@@ -21,6 +21,7 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'https://corpsboard.herokuapp.com/parse',  // Don't forget to change to https if needed
   fileKey: '57edad47-342b-49b5-97c5-bd384b2b8c46',
   FACEBOOK_APP_ID: '266535450217937',
+  loggerAdapter: new logger({ logsFolder: './' }),
   push: {
         ios: [
       {
