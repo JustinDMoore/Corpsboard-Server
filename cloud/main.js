@@ -26,8 +26,8 @@
 // });
 Parse.Cloud.define('hello',
     function(request, response) {
-        console.log('This will log to the console');
-        request.log.info("This will log to the file ", {user:request.user, params:request.params});
+        console.log('Hello, Justin');
+        request.log.info("Hello Justin: ", {user:request.user, params:request.params});
 });
 
 // Parse.Cloud.define('hello', function(req, res) {
@@ -143,7 +143,7 @@ Parse.Push.send({
 // Increment user profile view count
 Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                    Parse.Cloud.useMasterKey();
-                   console.log("Hello increment");
+                   console.log('Incrementing profile views...');
                    var user = new Parse.User();
                    var query = new Parse.Query(Parse.User);
                    query.equalTo("objectId", request.params.userObjectId);
@@ -152,11 +152,11 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                                success: function(object) {
                                object.increment("profileViews", 1);
                                object.save();
-                               console.log("Incremented profile count");
+                               console.log('Successful increment.');
                                response.success();
                                },
                                error: function(error) {
-                               console.error("Got an error " + error.code + " : " + error.message);
+                               console.error('Got an error ' + error.code + ' :'  + error.message);
                                response.error();
                                }
                                });
