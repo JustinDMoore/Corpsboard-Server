@@ -122,6 +122,7 @@ Parse.Push.send({
 // Increment user profile view count
 Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                    Parse.Cloud.useMasterKey();
+                   console.log("Hello increment");
                    var user = new Parse.User();
                    var query = new Parse.Query(Parse.User);
                    query.equalTo("objectId", request.params.userObjectId);
@@ -130,7 +131,7 @@ Parse.Cloud.define("incrementUserProfileViews", function(request, response) {
                                success: function(object) {
                                object.increment("profileViews", 1);
                                object.save();
-                               console.log("Incremented profile count")
+                               console.log("Incremented profile count");
                                response.success();
                                },
                                error: function(error) {
