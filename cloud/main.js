@@ -112,8 +112,8 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
   query.first({
               useMasterKey: true,
               success: function(object) {
-              console.log('Found user for push: ' + object.get('nickname') + ' : ' + request.params.userObjectId);
-              response.success();
+              console.log('Found user for push: ' + object.get('nickname') + ' : ' + request.params.userToPush);
+
 
 
 
