@@ -92,7 +92,8 @@ Parse.Push.send({
   data: {
      alert: request.params.message,
      sound: 'default',
-     pushType: 'scores'
+     pushType: 'scores',
+     showObjectId: request.params.showObjectId
   }
 }, {
   useMasterKey: true,
@@ -139,7 +140,8 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
     data: {
        alert: request.params.pushData,
        sound: 'default',
-       pushType: 'message'
+       pushType: 'message',
+       chatroom: request.params.chatroom
     }
   }, {
     useMasterKey: true,
