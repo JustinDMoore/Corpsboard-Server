@@ -131,52 +131,67 @@ Parse.Push.send({
 
 Parse.Cloud.define("pushUserMessage", function(request, response) {
 
-    var toUserId = request.params.toUserId;
-    var fromUserId = request.params.fromUserId;
-    var message = request.params.pushData;
-    // if toUserId is not defined, then exit
-    if (!toUserId) { return; }
 
-    // if formUser is equalTo toUser, then don't send the notifications
-    if (fromUserId === toUserId) { return; }
+  Parse.Push.send({
+    channels: [ request.params.toUserId ],
+    data: {
+       alert: request.params.pushData
+    }
+  }, {
+    useMasterKey: true,
+    success: function() {
+    	console.log('Push: ' + request.params.pushData)
+    }, error: function(err) {
+      console.log(err);
+    }
+  });
 
-    var Installation = Parse.Object.extend('_Installation');
-    var pushQuery = new Parse.Query(Installation);
-    pushQuery.contains('channels', toUserId);
-
-    console.log('Push Data ---------------------->');
-    console.log(message);
-    console.log('<---------------------- Push Data');
-
-    if (!message) { return; }
-
-    pushQuery.first().then(
-        function(user){
-            if (user){
-                console.log('sendPush [' + toUserId + '] -> ' + message);
-                try {
-                    Parse.Push.send({
-                        where: pushQuery,
-                        data: {
-                            alert: message
-                        }
-                    },
-                    {
-                        success: function () {
-                            console.log('push was successful to  ' + 'user_' + toUserId);
-                        },
-                        error: function (error) {
-                            console.log('push was error to ' + 'user_' +toUserId);
-                        },
-                        useMasterKey: true
-                    }
-                );
-                } catch(error){
-                    // be quite
-                }
-            }
-        }
-    );
+    // var toUserId = request.params.toUserId;
+    // var fromUserId = request.params.fromUserId;
+    // var message = request.params.pushData;
+    // // if toUserId is not defined, then exit
+    // if (!toUserId) { return; }
+    //
+    // // if formUser is equalTo toUser, then don't send the notifications
+    // if (fromUserId === toUserId) { return; }
+    //
+    // var Installation = Parse.Object.extend('_Installation');
+    // var pushQuery = new Parse.Query(Installation);
+    // pushQuery.contains('channels', toUserId);
+    //
+    // console.log('Push Data ---------------------->');
+    // console.log(message);
+    // console.log('<---------------------- Push Data');
+    //
+    // if (!message) { return; }
+    //
+    // pushQuery.first().then(
+    //     function(user){
+    //         if (user){
+    //             console.log('sendPush [' + toUserId + '] -> ' + message);
+    //             try {
+    //                 Parse.Push.send({
+    //                     where: pushQuery,
+    //                     data: {
+    //                         alert: message
+    //                     }
+    //                 },
+    //                 {
+    //                     success: function () {
+    //                         console.log('push was successful to  ' + 'user_' + toUserId);
+    //                     },
+    //                     error: function (error) {
+    //                         console.log('push was error to ' + 'user_' +toUserId);
+    //                     },
+    //                     useMasterKey: true
+    //                 }
+    //             );
+    //             } catch(error){
+    //                 // be quite
+    //             }
+    //         }
+    //     }
+    // );
 });
 // Parse.Cloud.define("pushUserMessage", function(request, response) {
 //
