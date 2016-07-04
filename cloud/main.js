@@ -138,7 +138,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
   Parse.Push.send({
     channels: [ request.params.toUserId ],
     data: {
-       alert: request.params.pushuData,
+       alert: request.params.message,
        sound: 'default',
        pushType: 'message',
        key: request.params.key
@@ -146,7 +146,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
   }, {
     useMasterKey: true,
     success: function() {
-    	console.log('Push: ' + request.params.pushData + 'for:  ' + request.params.toUserId)
+    	console.log('Push: ' + request.params.message + 'for:  ' + request.params.toUserId)
     }, error: function(err) {
       console.log(err);
     }
