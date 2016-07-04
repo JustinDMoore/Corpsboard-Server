@@ -104,6 +104,7 @@ Parse.Push.send({
 });
 
  Parse.Cloud.define("pushUserMessage", function(request, response) {
+   Parse.Cloud.useMasterKey();
 var query = new Parse.Query(Parse.User);
 query.equalTo('objectId', request.params.userToPush);
 // Find devices associated with these users
