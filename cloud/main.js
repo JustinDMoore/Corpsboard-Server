@@ -120,10 +120,11 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
     }, {
       useMasterKey: true,
       success: function() {
-        // Push sent!
+        console.log('Push sent')
       },
       error: function(error) {
         // There was a problem :(
+        consol.log('Error: ' + error)
       }
     });
 });
