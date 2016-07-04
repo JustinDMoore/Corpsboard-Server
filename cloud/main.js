@@ -121,10 +121,10 @@ Parse.Push.send({
     }
 }, {
     success: function () {
-        response.success("Hello world!");
+        console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.userToPush);
     },
     error: function (error) {
-        response.error(error);
+        console.error(error);
     }
 });
 });
