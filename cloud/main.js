@@ -102,33 +102,79 @@ Parse.Push.send({
 });
 
 });
+//
+// Parse.Cloud.define("pushUserMessage", function(request, response) {
+//     Parse.Cloud.useMasterKey();
+//     var query = new Parse.Query(Parse.User);
+//     var message = request.params.message;
+//     query.equalTo('objectId', request.params.userToPush);
+//
+//     // With Legacy Backbone callbacks
+//     Parse.Push.send({
+//       where: query,
+//       data: {
+//         alert: 'Test',
+//         badge: 1,
+//         sound: 'default'
+//       }
+//     }, {
+//       useMasterKey: true,
+//       success: function() {
+//         console.log('Push sent')
+//       },
+//       error: function(error) {
+//         // There was a problem :(
+//         consol.log('Error: ' + error)
+//       }
+//     });
+// });
 
 Parse.Cloud.define("pushUserMessage", function(request, response) {
-    Parse.Cloud.useMasterKey();
-    var query = new Parse.Query(Parse.User);
-    var message = request.params.message;
-    query.equalTo('objectId', request.params.userToPush);
 
-    // With Legacy Backbone callbacks
-    Parse.Push.send({
-      where: query,
-      data: {
-        alert: 'Test',
-        badge: 1,
-        sound: 'default'
-      }
-    }, {
-      useMasterKey: true,
-      success: function() {
-        console.log('Push sent')
-      },
-      error: function(error) {
-        // There was a problem :(
-        consol.log('Error: ' + error)
-      }
-    });
+    var toUserId = request.params.toUserId;
+    var fromUserId = request.params.fromUserId;
+    // if toUserId is not defined, then exit
+    if (!toUserId) { return; }
+
+    // if formUser is equalTo toUser, then don't send the notifications
+    if (fromUserId === toUserId) { return; }
+
+    var Installation = Parse.Object.extend("_Installation");
+    var pushQuery = new Parse.Query(Installation);
+    pushQuery.equalTo("user", toUserId);
+
+    console.log("Push Data ---------------------->");
+    console.log(pushData);
+    console.log("<---------------------- Push Data");
+
+    if (!pushData) { return; }
+
+    pushQuery.first().then(
+        function(user){
+            if (user){
+                console.log("sendPush [" + toUserId + "] -> " + pushData.alert);
+                try {
+                    Parse.Push.send({
+                        where: pushQuery,
+                        data: pushData
+                    },
+                    {
+                        success: function () {
+                            console.log("push was successful to " + "user_" + toUserId);
+                        },
+                        error: function (error) {
+                            console.log("push was error to " + "user_" +toUserId);
+                        },
+                        useMasterKey: true
+                    }
+                );
+                } catch(error){
+                    // be quite
+                }
+            }
+        }
+    );
 });
-
 // Parse.Cloud.define("pushUserMessage", function(request, response) {
 //
 //   Parse.Cloud.useMasterKey();
