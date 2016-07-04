@@ -120,10 +120,12 @@ Parse.Push.send({
  success: function() {
  //Success
  console.log('Pushed message: ' + message)
+ response.success();
  },
  error: function(error) {
  //Oops
  console.log('Push error: ' + error)
+ response.error();
  }
 });
 });
