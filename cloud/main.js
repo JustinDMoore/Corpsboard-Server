@@ -133,38 +133,40 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 
     var toUserId = request.params.toUserId;
     var fromUserId = request.params.fromUserId;
-    var pushData = request.params.pushData;
+    var message = request.params.pushData;
     // if toUserId is not defined, then exit
     if (!toUserId) { return; }
 
     // if formUser is equalTo toUser, then don't send the notifications
     if (fromUserId === toUserId) { return; }
 
-    var Installation = Parse.Object.extend("_Installation");
+    var Installation = Parse.Object.extend('_Installation');
     var pushQuery = new Parse.Query(Installation);
-    pushQuery.contains("channels", toUserId);
+    pushQuery.contains('channels', toUserId);
 
-    console.log("Push Data ---------------------->");
-    console.log(pushData);
-    console.log("<---------------------- Push Data");
+    console.log('Push Data ---------------------->');
+    console.log(message);
+    console.log('<---------------------- Push Data');
 
-    if (!pushData) { return; }
+    if (!message) { return; }
 
     pushQuery.first().then(
         function(user){
             if (user){
-                console.log("sendPush [" + toUserId + "] -> " + pushData.alert);
+                console.log('sendPush [' + toUserId + '] -> ' + message);
                 try {
                     Parse.Push.send({
                         where: pushQuery,
-                        data: pushData
+                        data: {
+                            alert: message
+                        }
                     },
                     {
                         success: function () {
-                            console.log("push was successful to " + "user_" + toUserId);
+                            console.log('push was successful to  ' + 'user_' + toUserId);
                         },
                         error: function (error) {
-                            console.log("push was error to " + "user_" +toUserId);
+                            console.log('push was error to ' + 'user_' +toUserId);
                         },
                         useMasterKey: true
                     }
