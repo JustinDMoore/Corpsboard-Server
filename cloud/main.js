@@ -95,7 +95,7 @@ Parse.Push.send({
 }, {
   useMasterKey: true,
   success: function() {
-  	console.log("Push successful.")
+  	console.log('Push successful.')
   }, error: function(err) {
     console.log(err);
   }
@@ -107,7 +107,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 
  // Creates a pointer to _User with object id of userId
 var targetUser = new Parse.User();
-targetUser.id = request.params.objectId;
+targetUser.id = request.params.userToPush;
 
 var query = new Parse.Query(Parse.Installation);
 query.equalTo('user', targetUser);
@@ -115,15 +115,15 @@ query.equalTo('user', targetUser);
    Parse.Push.send({
         where: query,
         data: {
-            alert: "You have a message."
+            alert: request.params.message
         }
     }, {
     useMasterKey: true,
     success: function() {
-        console.log("success: Message Push" + request.params.objectId);
+        console.log('success: Message Push' + request.params.objectId);
     },
     error: function(e) {
-        console.log("error: Message Push: " + e.code + " msg: " + e.message);
+        console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
     }
     });
 });
