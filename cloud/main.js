@@ -140,7 +140,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
   }, {
     useMasterKey: true,
     success: function() {
-    	console.log('Push: ' + request.params.pushData)
+    	console.log('Push: ' + request.params.pushData + 'for: ' + request.params.toUserId)
     }, error: function(err) {
       console.log(err);
     }
