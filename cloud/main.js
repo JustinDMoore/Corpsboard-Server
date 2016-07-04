@@ -105,12 +105,16 @@ Parse.Push.send({
 
  Parse.Cloud.define("pushUserMessage", function(request, response) {
    Parse.Cloud.useMasterKey();
-var query = new Parse.Query(Parse.User);
-query.equalTo('objectId', request.params.userToPush);
-// Find devices associated with these users
-var pushQuery = new Parse.Query(Parse.Installation);
+   // Creates a pointer to _User with object id of userId
+   var targetUser = new Parse.User();
+   targetUser.id = request.params.userToPush;
+
+   var query = new Parse.Query(Parse.Installation);
+   query.equalTo('user', targetUser);
+
+   var pushQuery = new Parse.Query(Parse.Installation);
 // need to have users linked to installations
-pushQuery.matchesQuery('user', query);
+  pushQuery.matchesQuery('user', query);
 
 Parse.Push.send({
   channels: ['test-channel'],
