@@ -91,7 +91,8 @@ Parse.Push.send({
   channels: [ "global" ],
   data: {
      alert: request.params.message,
-     sound: 'default'
+     sound: 'default',
+     pushType: 'scores'
   }
 }, {
   useMasterKey: true,
@@ -137,7 +138,8 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
     channels: [ request.params.toUserId ],
     data: {
        alert: request.params.pushData,
-       sound: 'default'
+       sound: 'default',
+       pushType: 'message'
     }
   }, {
     useMasterKey: true,
