@@ -112,21 +112,16 @@ var pushQuery = new Parse.Query(Parse.Installation);
 pushQuery.matchesQuery('user', query);
 
 Parse.Push.send({
-    where: pushQuery,
-    data: {
-        aps: {
-            alert: request.params.message,
-            sound: ""
-        }
-    }
-}, {
-    success: function () {
-        console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.userToPush);
-    },
-    error: function (error) {
-        console.error(error);
-    }
-});
+  channels: ['test-channel'],
+  data: {
+    alert: request.params.message,
+    badge: 1,
+    sound: 'default'
+  }
+}, { useMasterKey: true }).then(() => {
+  console.log('Message: ' + request.params.message + ' User: ' + request.params.userToPush);
+}, (e) => {
+  console.log('Push error', e);
 });
 
 // Parse.Cloud.define("pushUserMessage", function(request, response) {
