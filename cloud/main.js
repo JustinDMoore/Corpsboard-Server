@@ -103,51 +103,77 @@ Parse.Push.send({
 
 });
 
-Parse.Cloud.define("pushUserMessage", function(request, response) {
+ Parse.Cloud.define("pushUserMessage", function(request, response) {
+var query = new Parse.Query(Parse.User);
+query.equalTo('objectId', request.params.userToPush);
+// Find devices associated with these users
+var pushQuery = new Parse.Query(Parse.Installation);
+// need to have users linked to installations
+pushQuery.matchesQuery('user', query);
 
-  Parse.Cloud.useMasterKey();
-  var user = new Parse.User();
-  var query = new Parse.Query(Parse.User);
-  query.equalTo("objectId", request.params.userToPush);
-  query.first({
-              useMasterKey: true,
-              success: function(object) {
-              console.log('Found user for push: ' + object.get('nickname') + ' : ' + request.params.userToPush);
-
-
-
-
-              // Creates a pointer to _User with object id of userId
-            //  var targetUser = new Parse.User();
-            //  targetUser.id = request.params.userToPush;
-
-             var query = new Parse.Query(Parse.Installation);
-             query.equalTo('user', object);
-
-                Parse.Push.send({
-                     where: query,
-                     data: {
-                         alert: request.params.message
-                     }
-                 }, {
-                 useMasterKey: true,
-                 success: function() {
-                     console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.userToPush);
-                 },
-                 error: function(e) {
-                     console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
-                 }
-                 });
-
-
-
-              },
-              error: function(error) {
-              console.error('Could not find user for push: ' + error.code + ' :'  + error.message);
-              response.error();
-              }
-              });
+Parse.Push.send({
+    where: pushQuery,
+    data: {
+        aps: {
+            alert: request.params.message,
+            sound: ""
+        }
+    }
+}, {
+    success: function () {
+        response.success("Hello world!");
+    },
+    error: function (error) {
+        response.error(error);
+    }
 });
+});
+
+// Parse.Cloud.define("pushUserMessage", function(request, response) {
+//
+//   Parse.Cloud.useMasterKey();
+//   var user = new Parse.User();
+//   var query = new Parse.Query(Parse.User);
+//   query.equalTo("objectId", request.params.userToPush);
+//   query.first({
+//               useMasterKey: true,
+//               success: function(object) {
+//               console.log('Found user for push: ' + object.get('nickname') + ' : ' + request.params.userToPush);
+//
+//
+//
+//
+//               // Creates a pointer to _User with object id of userId
+//             //  var targetUser = new Parse.User();
+//             //  targetUser.id = request.params.userToPush;
+//
+//              var query = new Parse.Query(Parse.Installation);
+//              query.equalTo('user', object);
+//
+//                 Parse.Push.send({
+//                      where: query,
+//                      data: {
+//                          alert: request.params.message
+//                      }
+//                  }, {
+//                  useMasterKey: true,
+//                  success: function() {
+//                      console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.userToPush);
+//                  },
+//                  error: function(e) {
+//                      console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
+//                  }
+//                  });
+//
+//
+//
+//               },
+//               error: function(error) {
+//               console.error('Could not find user for push: ' + error.code + ' :'  + error.message);
+//               response.error();
+//               }
+//               });
+// });
 
 Parse.Cloud.define("pushUserAtShow", function(request, response) {
 
