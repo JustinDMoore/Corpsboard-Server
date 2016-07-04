@@ -103,30 +103,29 @@ Parse.Push.send({
 
 });
 
- Parse.Cloud.define("pushUserMessage", function(request, response) {
-   Parse.Cloud.useMasterKey();
-   // Creates a pointer to _User with object id of userId
-   var targetUser = new Parse.User();
-   targetUser.id = request.params.userToPush;
-
-   var query = new Parse.Query(Parse.Installation);
-   query.equalTo('user', targetUser);
-
-   var pushQuery = new Parse.Query(Parse.Installation);
-// need to have users linked to installations
-  pushQuery.matchesQuery('user', query);
+Parse.Cloud.define("pushUserMessage", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  var query = new Parse.Query(Parse.User);
+var message = request.params.message;
+query.equalTo('objectId', request.params.userToPush);
 
 Parse.Push.send({
-  channels: ['test-channel'],
-  data: {
-    alert: request.params.message,
-    badge: 1,
-    sound: 'default'
-  }
-}, { useMasterKey: true }).then(() => {
-  console.log('Message: ' + request.params.message + ' User: ' + request.params.userToPush);
-}, (e) => {
-  console.log('Push error', e);
+ where: query,
+ data : {
+   alert: message,
+   badge: "Increment",
+   sound: "default",
+ }
+ }, {
+ success: function() {
+ //Success
+ console.log('Pushed message: ' + message)
+ },
+ error: function(error) {
+ //Oops
+ console.log('Push error: ' + error)
+ }
+});
 });
 
 // Parse.Cloud.define("pushUserMessage", function(request, response) {
@@ -174,34 +173,34 @@ Parse.Push.send({
 //               }
 //               });
 // });
-
-Parse.Cloud.define("pushUserAtShow", function(request, response) {
-
-// Find users near a given location
-var userQuery = new Parse.Query(Parse.User);
-userQuery.withinMiles("geo", stadiumLocation, 1.0);
-
-// Find devices associated with these users
-var pushQuery = new Parse.Query(Parse.Installation);
-pushQuery.matchesQuery('user', userQuery);
-
-// Send push notification to query
-Parse.Push.send({
-  where: pushQuery,
-  data: {
-    alert: "Free hotdogs at the Parse concession stand!"
-  }
-}, {
-  success: function() {
-    // Push was successful
-  },
-  error: function(error) {
-    // Handle error
-  }
-});
-
-
-});
+//
+// Parse.Cloud.define("pushUserAtShow", function(request, response) {
+//
+// // Find users near a given location
+// var userQuery = new Parse.Query(Parse.User);
+// userQuery.withinMiles("geo", stadiumLocation, 1.0);
+//
+// // Find devices associated with these users
+// var pushQuery = new Parse.Query(Parse.Installation);
+// pushQuery.matchesQuery('user', userQuery);
+//
+// // Send push notification to query
+// Parse.Push.send({
+//   where: pushQuery,
+//   data: {
+//     alert: "Free hotdogs at the Parse concession stand!"
+//   }
+// }, {
+//   success: function() {
+//     // Push was successful
+//   },
+//   error: function(error) {
+//     // Handle error
+//   }
+// });
+//
+//
+// });
 
 
 // // Increments number of messages in the chatroom a message is sent to
