@@ -120,7 +120,7 @@ query.equalTo('user', targetUser);
     }, {
     useMasterKey: true,
     success: function() {
-        console.log('success: Message Push' + request.params.objectId);
+        console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.usertoPush);
     },
     error: function(e) {
         console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
