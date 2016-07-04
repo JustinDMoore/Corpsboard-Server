@@ -105,27 +105,48 @@ Parse.Push.send({
 
 Parse.Cloud.define("pushUserMessage", function(request, response) {
 
- // Creates a pointer to _User with object id of userId
-var targetUser = new Parse.User();
-targetUser.id = request.params.userToPush;
+  Parse.Cloud.useMasterKey();
+  var user = new Parse.User();
+  var query = new Parse.Query(Parse.User);
+  query.equalTo("objectId", request.params.userToPush);
+  query.first({
+              useMasterKey: true,
+              success: function(object) {
+              console.log('Found user for push: ' + object.get('nickname') + ' : ' + request.params.userObjectId);
+              response.success();
 
-var query = new Parse.Query(Parse.Installation);
-query.equalTo('user', targetUser);
 
-   Parse.Push.send({
-        where: query,
-        data: {
-            alert: request.params.message
-        }
-    }, {
-    useMasterKey: true,
-    success: function() {
-        console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.usertoPush);
-    },
-    error: function(e) {
-        console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
-    }
-    });
+
+              // Creates a pointer to _User with object id of userId
+            //  var targetUser = new Parse.User();
+            //  targetUser.id = request.params.userToPush;
+
+             var query = new Parse.Query(Parse.Installation);
+             query.equalTo('user', object);
+
+                Parse.Push.send({
+                     where: query,
+                     data: {
+                         alert: request.params.message
+                     }
+                 }, {
+                 useMasterKey: true,
+                 success: function() {
+                     console.log('Sent message: ' + request.params.message + ' to user: ' + request.params.userToPush);
+                 },
+                 error: function(e) {
+                     console.log('error: Message Push: ' + e.code + ' msg: ' + e.message);
+                 }
+                 });
+
+
+
+              },
+              error: function(error) {
+              console.error('Could not find user for push: ' + error.code + ' :'  + error.message);
+              response.error();
+              }
+              });
 });
 
 Parse.Cloud.define("pushUserAtShow", function(request, response) {
