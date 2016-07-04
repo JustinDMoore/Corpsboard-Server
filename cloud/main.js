@@ -104,30 +104,28 @@ Parse.Push.send({
 });
 
 Parse.Cloud.define("pushUserMessage", function(request, response) {
-  Parse.Cloud.useMasterKey();
-  var query = new Parse.Query(Parse.User);
-var message = request.params.message;
-query.equalTo('objectId', request.params.userToPush);
+    Parse.Cloud.useMasterKey();
+    var query = new Parse.Query(Parse.User);
+    var message = request.params.message;
+    query.equalTo('objectId', request.params.userToPush);
 
-Parse.Push.send({
- where: query,
- data : {
-   alert: message,
-   badge: "Increment",
-   sound: "default",
- }
- }, {
- success: function() {
- //Success
- console.log('Pushed message: ' + message)
- response.success();
- },
- error: function(error) {
- //Oops
- console.log('Push error: ' + error)
- response.error();
- }
-});
+    // With Legacy Backbone callbacks
+    Parse.Push.send({
+      where: query,
+      data: {
+        alert: 'Test',
+        badge: 1,
+        sound: 'default'
+      }
+    }, {
+      useMasterKey: true,
+      success: function() {
+        // Push sent!
+      },
+      error: function(error) {
+        // There was a problem :(
+      }
+    });
 });
 
 // Parse.Cloud.define("pushUserMessage", function(request, response) {
