@@ -142,7 +142,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 
     var Installation = Parse.Object.extend("_Installation");
     var pushQuery = new Parse.Query(Installation);
-    pushQuery.contains("channels", "user_"+toUserId);
+    pushQuery.contains("channels", toUserId);
 
     console.log("Push Data ---------------------->");
     console.log(pushData);
