@@ -90,7 +90,8 @@ Parse.Cloud.define("pushScores", function(request, response) {
 Parse.Push.send({
   channels: [ "global" ],
   data: {
-     alert: request.params.message
+     alert: request.params.message,
+     sound: 'default'
   }
 }, {
   useMasterKey: true,
@@ -135,12 +136,13 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
   Parse.Push.send({
     channels: [ request.params.toUserId ],
     data: {
-       alert: request.params.pushData
+       alert: request.params.pushData,
+       sound: 'default'
     }
   }, {
     useMasterKey: true,
     success: function() {
-    	console.log('Push: ' + request.params.pushData + 'for: ' + request.params.toUserId)
+    	console.log('Push: ' + request.params.pushData + 'for:  ' + request.params.toUserId)
     }, error: function(err) {
       console.log(err);
     }
