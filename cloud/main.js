@@ -133,6 +133,7 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 
     var toUserId = request.params.toUserId;
     var fromUserId = request.params.fromUserId;
+    var pushData = request.params.pushData;
     // if toUserId is not defined, then exit
     if (!toUserId) { return; }
 
