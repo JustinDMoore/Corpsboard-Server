@@ -30,6 +30,7 @@ Parse.Cloud.afterSave("userTap", function(request, response) {
                       Parse.Cloud.useMasterKey();
 
                       var query = new Parse.Query("AppSettings");
+                      query.equalTo("objectId", "Ok9gUWM1tn");
                       query.first({
                                   success: function(object) {
                                   object.increment(request.params.tapped, 1);
