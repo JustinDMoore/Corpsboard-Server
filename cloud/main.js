@@ -34,8 +34,8 @@ Parse.Cloud.define("tapNearMe", function(request, response) {
               success: function(object) {
               object.increment("nearMe", 1);
               object.save();
-              response.success();
               console.log('Tapped near me')
+              response.success();
               },
               error: function(error) {
               console.error('Got an error ' + error.code + ' : ' + error.message);
