@@ -26,12 +26,33 @@
 // });
 
 // Increment what user's tap on
-Parse.Cloud.afterSave("userTap", function(request, response) {
+Parse.Cloud.define("userTap", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  // var user = new Parse.User();
+  // var query = new Parse.Query("AppSettings");
+  // query.equalTo("objectId", 'Ok9gUWM1tn');
+  // query.first({
+  //             useMasterKey: true,
+  //             success: function(object) {
+  //             object.increment("profileViews", 1);
+  //             object.save();
+  //             console.log('Profile views incremented for: ' + object.get('nickname') + ' : ' + request.params.userObjectId);
+  //             response.success();
+  //             },
+  //             error: function(error) {
+  //             console.error('Profile views NOT incremented: ' + error.code + ' :'  + error.message);
+  //             response.error();
+  //             }
+
+
+
+
                       Parse.Cloud.useMasterKey();
                       console.log('Starting User tapped: ' + request.params.tapped);
                       var query = new Parse.Query('AppSettings');
                       query.equalTo('objectId', 'Ok9gUWM1tn');
                       query.first({
+                                  useMasterKey: true,
                                   success: function(object) {
                                   object.increment(request.params.tapped, 1);
                                   object.save();
@@ -41,7 +62,8 @@ Parse.Cloud.afterSave("userTap", function(request, response) {
                                   error: function(error) {
                                   console.error('ERROR: User tapped: ' + error.code + ' :'  + error.message);
                                   response.error();
-                                  }
+                                },
+
                                   });
 
                       });
