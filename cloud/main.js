@@ -30,6 +30,7 @@ Parse.Cloud.define("tapNearMe", function(request, response) {
   Parse.Cloud.useMasterKey();
 
   var query = new Parse.Query("AppSettings");
+  query.equalTo("objectId", "Ok9gUWM1tn");
   query.first({
               success: function(object) {
               object.increment("nearMe", 1);
