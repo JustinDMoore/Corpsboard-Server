@@ -26,40 +26,19 @@
 // });
 
 // Increment what user's tap on
-Parse.Cloud.define('tapNearMe', function(request, response) {
+Parse.Cloud.define('userTap', function(request, response) {
       var userQuery = new Parse.Query('AppSettings');
       userQuery.first({ useMasterKey: true }).then((userData) => {
-        console.log("before save");
-        userData.increment("nearMe",1);
+        console.log("User tapped: " + request.params.tapped);
+        userData.increment(request.params.tapped,1);
         return userData.save(null, { useMasterKey: true });
       }).then((userDataAgain) => {
-        console.log('after save');
-        response.success('whatever you want to return');
+        console.log('Saved tap');
+        response.success('Tap save successful.');
       }, (error) => {
         console.log(error);
         response.error(error);
       });
-
-  //
-  //
-  //
-  // Parse.Cloud.useMasterKey();
-  //
-  // var query = new Parse.Query("AppSettings");
-  // query.equalTo("objectId", "Ok9gUWM1tn");
-  // query.first({
-  //             success: function(object) {
-  //             object.increment("nearMe", 1);
-  //             object.save();
-  //             console.log('Tapped near me')
-  //             response.success();
-  //             },
-  //             error: function(error) {
-  //             console.error('Got an error ' + error.code + ' : ' + error.message);
-  //             response.error();
-  //             },
-  //             useMasterKey: true
-  //             });
 });
 
 // Increment user profile view count
