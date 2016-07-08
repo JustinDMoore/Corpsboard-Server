@@ -28,13 +28,14 @@
 // Increment what user's tap on
 Parse.Cloud.define("userTap", function(request, response) {
                       Parse.Cloud.useMasterKey();
+                      var tapped = request.params.tapped
                       var query = new Parse.Query("AppSettings");
                       query.first({
                                   useMasterKey: true,
                                   success: function(object) {
-                                  object.increment(request.params.tapped, 1);
+                                  object.increment(tapped, 1);
                                   object.save();
-                                  console.log('User tapped: ' + request.params.tapped);
+                                  console.log('User tapped: ' + tapped);
                                   response.success();
                                   },
                                   error: function(error) {
