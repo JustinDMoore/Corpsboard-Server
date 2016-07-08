@@ -379,7 +379,8 @@ Parse.Cloud.afterSave("feedback", function(request, response) {
                                   error: function(error) {
                                   console.error('Got an error ' + error.code + ' : ' + error.message);
                                   response.error();
-                                  }
+                                  },
+                                  useMasterKey: true
                                   });
 
                       }
