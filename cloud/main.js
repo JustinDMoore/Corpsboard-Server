@@ -25,6 +25,26 @@
 //   });
 // });
 
+// Increment what user's tap on
+Parse.Cloud.afterSave("userTap", function(request, response) {
+                      Parse.Cloud.useMasterKey();
+
+                      var query = new Parse.Query("AppSettings");
+                      query.first({
+                                  success: function(object) {
+                                  object.increment(request.params.tapped, 1);
+                                  object.save();
+                                  console.log('User tapped: ' + request.params.tapped);
+                                  response.success();
+                                  },
+                                  error: function(error) {
+                                  console.error('ERROR: User tapped: ' + error.code + ' :'  + error.message);
+                                  response.error();
+                                  }
+                                  });
+
+                      });
+
 // Increment user profile view count
 Parse.Cloud.define('incrementProfileViews',
     function(request, response) {
@@ -105,32 +125,6 @@ Parse.Push.send({
 });
 
 });
-//
-// Parse.Cloud.define("pushUserMessage", function(request, response) {
-//     Parse.Cloud.useMasterKey();
-//     var query = new Parse.Query(Parse.User);
-//     var message = request.params.message;
-//     query.equalTo('objectId', request.params.userToPush);
-//
-//     // With Legacy Backbone callbacks
-//     Parse.Push.send({
-//       where: query,
-//       data: {
-//         alert: 'Test',
-//         badge: 1,
-//         sound: 'default'
-//       }
-//     }, {
-//       useMasterKey: true,
-//       success: function() {
-//         console.log('Push sent')
-//       },
-//       error: function(error) {
-//         // There was a problem :(
-//         consol.log('Error: ' + error)
-//       }
-//     });
-// });
 
 Parse.Cloud.define("pushUserMessage", function(request, response) {
 
@@ -355,178 +349,174 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 //                    });
 
 // // Admin functions
-// Parse.Cloud.afterSave("feedback", function(request, response) {
-//                       Parse.Cloud.useMasterKey();
+Parse.Cloud.afterSave("feedback", function(request, response) {
+                      Parse.Cloud.useMasterKey();
 
-//                       if (request.object.existed()) { // it existed before
+                      if (request.object.existed()) { // it existed before
 
-//                       } else { // it is new
+                      } else { // it is new
 
-//                       var query = new Parse.Query("AppSettings");
-//                       query.equalTo("objectId", "IjplBNRNjj");
-//                       query.first({
-//                                   success: function(object) {
-//                                   object.increment("feedback", 1);
-//                                   object.save();
-//                                   Parse.Push.send({
-//                                                   channels: [ "admin" ],
-//                                                   data: {
-//                                                   alert: "New Feedback Received"
-//                                                   }
-//                                                   }, { success: function() {
-//                                                   // success!
-//                                                   }, error: function(err) {
-//                                                   console.log(err);
-//                                                   }
-//                                                   });
+                      var query = new Parse.Query("AppSettings");
+                      query.first({
+                                  success: function(object) {
+                                  object.increment("feedback", 1);
+                                  object.save();
+                                  Parse.Push.send({
+                                                  channels: [ "admin" ],
+                                                  data: {
+                                                  alert: "New Feedback Received"
+                                                  }
+                                                  }, { success: function() {
+                                                  // success!
+                                                  }, error: function(err) {
+                                                  console.log(err);
+                                                  }
+                                                  });
 
-//                                   response.success();
-//                                   },
-//                                   error: function(error) {
-//                                   console.error("Got an error " + error.code + " : " + error.message);
-//                                   response.error();
-//                                   }
-//                                   });
+                                  response.success();
+                                  },
+                                  error: function(error) {
+                                  console.error('Got an error ' + error.code + ' : ' + error.message);
+                                  response.error();
+                                  }
+                                  });
 
-//                       }
+                      }
 
-//                       });
+                      });
 
-// Parse.Cloud.afterSave("photos", function(request, response) {
-//                       Parse.Cloud.useMasterKey();
+Parse.Cloud.afterSave("photos", function(request, response) {
+                      Parse.Cloud.useMasterKey();
 
-//                       if (request.object.existed()) { // it existed before
+                      if (request.object.existed()) { // it existed before
 
-//                       } else { // it is new
+                      } else { // it is new
 
-//                       var userSubmitted = request.object.get("isUserSubmitted");
-//                       if (userSubmitted) {
-//                       var query = new Parse.Query("AppSettings");
-//                       query.equalTo("objectId", "IjplBNRNjj");
-//                       query.first({
-//                                   success: function(object) {
-//                                   object.increment("photos", 1);
-//                                   object.save();
-//                                   Parse.Push.send({
-//                                                   channels: [ "admin" ],
-//                                                   data: {
-//                                                   alert: "New cover photo for review"
-//                                                   }
-//                                                   }, { success: function() {
-//                                                   // success!
-//                                                   }, error: function(err) {
-//                                                   console.log(err);
-//                                                   }
-//                                                   });
+                      var userSubmitted = request.object.get("isUserSubmitted");
+                      if (userSubmitted) {
+                      var query = new Parse.Query("AppSettings");
+                      query.first({
+                                  success: function(object) {
+                                  object.increment("photos", 1);
+                                  object.save();
+                                  Parse.Push.send({
+                                                  channels: [ "admin" ],
+                                                  data: {
+                                                  alert: "New cover photo for review"
+                                                  }
+                                                  }, { success: function() {
+                                                  // success!
+                                                  }, error: function(err) {
+                                                  console.log(err);
+                                                  }
+                                                  });
 
-//                                   response.success();
-//                                   },
-//                                   error: function(error) {
-//                                   console.error("Got an error " + error.code + " : " + error.message);
-//                                   response.error();
-//                                   }
-//                                   });
-//                       }
-//                       }
+                                  response.success();
+                                  },
+                                  error: function(error) {
+                                  console.error('Got an error ' + error.code + ' : ' + error.message);
+                                  response.error();
+                                  }
+                                  });
+                      }
+                      }
 
 
-//                       });
+                      });
 
-// Parse.Cloud.afterSave("reportUsers", function(request, response) {
-//                       Parse.Cloud.useMasterKey();
+Parse.Cloud.afterSave("reportUsers", function(request, response) {
+                      Parse.Cloud.useMasterKey();
 
-//                       if (request.object.existed()) { // it existed before
-//                       } else { // it is new
+                      if (request.object.existed()) { // it existed before
+                      } else { // it is new
 
-//                       var query = new Parse.Query("AppSettings");
-//                       query.equalTo("objectId", "IjplBNRNjj");
-//                       query.first({
-//                                   success: function(object) {
-//                                   object.increment("usersReported", 1);
-//                                   object.save();
-//                                   Parse.Push.send({
-//                                                   channels: [ "admin" ],
-//                                                   data: {
-//                                                   alert: "A user has been reported"
-//                                                   }
-//                                                   }, { success: function() {
-//                                                   // success!
-//                                                   }, error: function(err) {
-//                                                   console.log(err);
-//                                                   }
-//                                                   });
+                      var query = new Parse.Query("AppSettings");
+                      query.first({
+                                  success: function(object) {
+                                  object.increment("usersReported", 1);
+                                  object.save();
+                                  Parse.Push.send({
+                                                  channels: [ "admin" ],
+                                                  data: {
+                                                  alert: "A user has been reported"
+                                                  }
+                                                  }, { success: function() {
+                                                  // success!
+                                                  }, error: function(err) {
+                                                  console.log(err);
+                                                  }
+                                                  });
 
-//                                   response.success();
-//                                   },
-//                                   error: function(error) {
-//                                   console.error("Got an error " + error.code + " : " + error.message);
-//                                   response.error();
-//                                   }
-//                                   });
-
-
-//                       }
-
-//                       });
-
-// Parse.Cloud.afterSave("problems", function(request, response) {
-//                       Parse.Cloud.useMasterKey();
-
-//                       if (request.object.existed()) { // it existed before
-//                       } else { // it is new
-
-//                       var type = request.object.get("type");
-//                       var query = new Parse.Query("AppSettings");
-//                       query.equalTo("objectId", "IjplBNRNjj");
-//                       query.first({
-//                                   success: function(object) {
-//                                   object.increment("problems", 1);
-//                                   object.save();
-//                                   Parse.Push.send({
-//                                                   channels: [ "admin" ],
-//                                                   data: {
-//                                                   alert: type + " reported"
-//                                                   }
-//                                                   }, { success: function() {
-//                                                   // success!
-//                                                   }, error: function(err) {
-//                                                   console.log(err);
-//                                                   }
-//                                                   });
-
-//                                   response.success();
-//                                   },
-//                                   error: function(error) {
-//                                   console.error("Got an error " + error.code + " : " + error.message);
-//                                   response.error();
-//                                   }
-//                                   });
-
-//                       }
-
-//                       });
+                                  response.success();
+                                  },
+                                  error: function(error) {
+                                  console.error('Got an error ' + error.code + ' : ' + error.message);
+                                  response.error();
+                                  }
+                                  });
 
 
-// Parse.Cloud.afterSave(Parse.User, function(request, response) {
-//                       Parse.Cloud.useMasterKey();
+                      }
 
-//                       if (request.object.existed()) { // it existed before
-//                       } else { // it is newaf
-//                       Parse.Push.send({
-//                                       channels: [ "admin" ],
-//                                       data: {
-//                                       alert: "New user signed up for Corpboard"
-//                                       }
-//                                       }, { success: function() {
-//                                       // success!
-//                                       }, error: function(err) {
-//                                       console.log(err);
-//                                       }
-//                                       });
+                      });
 
-//                       }
+Parse.Cloud.afterSave("problems", function(request, response) {
+                      Parse.Cloud.useMasterKey();
 
-//                       });
+                      if (request.object.existed()) { // it existed before
+                      } else { // it is new
+
+                      var type = request.object.get("type");
+                      var query = new Parse.Query("AppSettings");
+                      query.first({
+                                  success: function(object) {
+                                  object.increment("problems", 1);
+                                  object.save();
+                                  Parse.Push.send({
+                                                  channels: [ "admin" ],
+                                                  data: {
+                                                  alert: type + " reported"
+                                                  }
+                                                  }, { success: function() {
+                                                  // success!
+                                                  }, error: function(err) {
+                                                  console.log(err);
+                                                  }
+                                                  });
+
+                                  response.success();
+                                  },
+                                  error: function(error) {
+                                  console.error('Got an error ' + error.code + ' : ' + error.message);
+                                  response.error();
+                                  }
+                                  });
+
+                      }
+
+                      });
+
+
+Parse.Cloud.afterSave(Parse.User, function(request, response) {
+                      Parse.Cloud.useMasterKey();
+
+                      if (request.object.existed()) { // it existed before
+                      } else { // it is newaf
+                      Parse.Push.send({
+                                      channels: [ "admin" ],
+                                      data: {
+                                      alert: "New user signed up for Corpsboard."
+                                      }
+                                      }, { success: function() {
+                                      // success!
+                                      }, error: function(err) {
+                                      console.log(err);
+                                      }
+                                      });
+
+                      }
+
+                      });
 
 
 // var moment = require("moment");
@@ -542,16 +532,16 @@ Parse.Cloud.define("pushUserMessage", function(request, response) {
 //                                     });
 //                    });
 
-// Parse.Cloud.define("getOnlineUsers", function(request, response) {
-//                    var userQuery = new Parse.Query(Parse.User);
-//                    var activeSince = moment().subtract("minutes", 10).toDate();
-//                    userQuery.greaterThan("lastLogin", activeSince);
-//                    userQuery.find().then(function (users) {
-//                                          response.success(users);
-//                                          }, function (error) {
-//                                          response.error(error);
-//                                          });
-//                    });
+Parse.Cloud.define("getOnlineUsers", function(request, response) {
+                   var userQuery = new Parse.Query(Parse.User);
+                   var activeSince = moment().subtract("minutes", 10).toDate();
+                   userQuery.greaterThan("lastLogin", activeSince);
+                   userQuery.find().then(function (users) {
+                                         response.success(users);
+                                         }, function (error) {
+                                         response.error(error);
+                                         });
+                   });
 
 
 // // STORE
