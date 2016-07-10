@@ -27,7 +27,7 @@ var api = new ParseServer({
       {
         pfx: 'Push/YeaPushProductionCertificate.p12', // Dev P12
         bundleId: 'com.justin.corpboard',
-        production: true // Prod
+        production: false // Prod
       },
       {
         pfx: 'Push/CorpsboardPushProductionCertificate.p12', // Prod P12
