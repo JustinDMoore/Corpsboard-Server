@@ -65,7 +65,7 @@ app.get('/test', function(req, res) {
 });
 
 app.get('/testing', function(req, res) {
-  res.sendFile(path.join(__dirname, '/testing/index.html'));
+  res.sendFile(path.join(__dirname, '/public/testing/index.html'));
 });
 
 var port = process.env.PORT || 1337;
