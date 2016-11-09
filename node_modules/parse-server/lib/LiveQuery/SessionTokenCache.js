@@ -15,9 +15,9 @@ var _lruCache = require('lru-cache');
 
 var _lruCache2 = _interopRequireDefault(_lruCache);
 
-var _PLog = require('./PLog');
+var _logger = require('../logger');
 
-var _PLog2 = _interopRequireDefault(_PLog);
+var _logger2 = _interopRequireDefault(_logger);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,16 +46,16 @@ var SessionTokenCache = function () {
       }
       var userId = this.cache.get(sessionToken);
       if (userId) {
-        _PLog2.default.verbose('Fetch userId %s of sessionToken %s from Cache', userId, sessionToken);
+        _logger2.default.verbose('Fetch userId %s of sessionToken %s from Cache', userId, sessionToken);
         return _node2.default.Promise.as(userId);
       }
       return _node2.default.User.become(sessionToken).then(function (user) {
-        _PLog2.default.verbose('Fetch userId %s of sessionToken %s from Parse', user.id, sessionToken);
+        _logger2.default.verbose('Fetch userId %s of sessionToken %s from Parse', user.id, sessionToken);
         var userId = user.id;
         _this.cache.set(sessionToken, userId);
         return _node2.default.Promise.as(userId);
       }, function (error) {
-        _PLog2.default.error('Can not fetch userId for sessionToken %j, error %j', sessionToken, error);
+        _logger2.default.error('Can not fetch userId for sessionToken %j, error %j', sessionToken, error);
         return _node2.default.Promise.error(error);
       });
     }

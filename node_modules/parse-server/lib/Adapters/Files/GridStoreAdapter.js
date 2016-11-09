@@ -11,6 +11,12 @@ var _mongodb = require('mongodb');
 
 var _FilesAdapter2 = require('./FilesAdapter');
 
+var _defaults = require('../../defaults');
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -23,20 +29,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  weak
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
-var DefaultMongoURI = 'mongodb://localhost:27017/parse';
-
 var GridStoreAdapter = exports.GridStoreAdapter = function (_FilesAdapter) {
   _inherits(GridStoreAdapter, _FilesAdapter);
 
   function GridStoreAdapter() {
-    var mongoDatabaseURI = arguments.length <= 0 || arguments[0] === undefined ? DefaultMongoURI : arguments[0];
+    var mongoDatabaseURI = arguments.length <= 0 || arguments[0] === undefined ? _defaults2.default.DefaultMongoURI : arguments[0];
 
     _classCallCheck(this, GridStoreAdapter);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GridStoreAdapter).call(this));
+    var _this = _possibleConstructorReturn(this, (GridStoreAdapter.__proto__ || Object.getPrototypeOf(GridStoreAdapter)).call(this));
 
     _this._databaseURI = mongoDatabaseURI;
-    _this._connect();
     return _this;
   }
 
@@ -92,6 +95,16 @@ var GridStoreAdapter = exports.GridStoreAdapter = function (_FilesAdapter) {
     key: 'getFileLocation',
     value: function getFileLocation(config, filename) {
       return config.mount + '/files/' + config.applicationId + '/' + encodeURIComponent(filename);
+    }
+  }, {
+    key: 'getFileStream',
+    value: function getFileStream(filename) {
+      return this._connect().then(function (database) {
+        return _mongodb.GridStore.exist(database, filename).then(function () {
+          var gridStore = new _mongodb.GridStore(database, filename, 'r');
+          return gridStore.open();
+        });
+      });
     }
   }]);
 

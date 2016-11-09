@@ -33,7 +33,7 @@ var FeaturesRouter = exports.FeaturesRouter = function (_PromiseRouter) {
   function FeaturesRouter() {
     _classCallCheck(this, FeaturesRouter);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(FeaturesRouter).apply(this, arguments));
+    return _possibleConstructorReturn(this, (FeaturesRouter.__proto__ || Object.getPrototypeOf(FeaturesRouter)).apply(this, arguments));
   }
 
   _createClass(FeaturesRouter, [{
@@ -52,6 +52,9 @@ var FeaturesRouter = exports.FeaturesRouter = function (_PromiseRouter) {
             read: false,
             update: false,
             delete: false
+          },
+          cloudCode: {
+            jobs: true
           },
           logs: {
             level: true,

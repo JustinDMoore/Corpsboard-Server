@@ -7,9 +7,9 @@ exports.ParseWebSocket = exports.ParseWebSocketServer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PLog = require('./PLog');
+var _logger = require('../logger');
 
-var _PLog2 = _interopRequireDefault(_PLog);
+var _logger2 = _interopRequireDefault(_logger);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,7 +25,7 @@ var ParseWebSocketServer = exports.ParseWebSocketServer = function ParseWebSocke
   var WebSocketServer = require('ws').Server;
   var wss = new WebSocketServer({ server: server });
   wss.on('listening', function () {
-    _PLog2.default.log('Parse LiveQuery Server starts running');
+    _logger2.default.info('Parse LiveQuery Server starts running');
   });
   wss.on('connection', function (ws) {
     onConnect(new ParseWebSocket(ws));

@@ -33,7 +33,7 @@ var LogsRouter = exports.LogsRouter = function (_PromiseRouter) {
   function LogsRouter() {
     _classCallCheck(this, LogsRouter);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(LogsRouter).apply(this, arguments));
+    return _possibleConstructorReturn(this, (LogsRouter.__proto__ || Object.getPrototypeOf(LogsRouter)).apply(this, arguments));
   }
 
   _createClass(LogsRouter, [{
@@ -49,7 +49,7 @@ var LogsRouter = exports.LogsRouter = function (_PromiseRouter) {
     key: 'validateRequest',
     value: function validateRequest(req) {
       if (!req.config || !req.config.loggerController) {
-        throw new _node.Parse.Error(_node.Parse.Error.PUSH_MISCONFIGURED, 'Logger adapter is not availabe');
+        throw new _node.Parse.Error(_node.Parse.Error.PUSH_MISCONFIGURED, 'Logger adapter is not available');
       }
     }
 
